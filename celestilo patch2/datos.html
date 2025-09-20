@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrónicos en Oferta - Celestilo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .filter-option:hover {
+            background-color: #f3f4f6;
+        }
+        .price-before {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+        .discount-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #ef4444;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="app" class="min-h-screen flex flex-col">
+
+
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-600">Celestilo</h1>
+                    <nav class="ml-10 hidden md:flex space-x-8">
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Inicio</a>
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Categorías</a>
+
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex relative">
+                        <input type="text" placeholder="Buscar productos..." class="pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300">
+                        <button class="absolute right-3 top-2 text-gray-400 hover:text-indigo-600">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button class="text-gray-500 hover:text-indigo-600">
+                            <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        </button>
+                        <span class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </div>
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center space-x-2">
+                            <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fa-solid fa-user text-indigo-600"></i>
+                            </div>
+                            <span class="text-gray-700 font-medium">Cliente</span>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-100">Mi Cuenta</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-100">Mis Pedidos</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-100">Cerrar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="container mx-auto px-4 py-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="#" class="text-sm text-gray-700 hover:text-indigo-600">Inicio</a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-chevron-right text-gray-400 text-xs mx-2"></i>
+                            <a href="#" class="text-sm text-gray-700 hover:text-indigo-600">Productos</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-chevron-right text-gray-400 text-xs mx-2"></i>
+                            <span class="text-sm text-indigo-600 font-medium">Electrónicos en Oferta</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Filters Sidebar -->
+                <aside class="w-full md:w-64 flex-shrink-0">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-lg font-medium text-gray-800 mb-4">Filtros</h2>
+                        
+                        <!-- Categories -->
+                        <div class="mb-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-3">Categorías</h3>
+                            <div class="space-y-2">
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300" checked>
+                                    <span class="ml-2 text-sm text-gray-700">Smartphones</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300" checked>
+                                    <span class="ml-2 text-sm text-gray-700">Laptops</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">Tablets</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">Audio</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">Accesorios</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Price Range -->
+                        <div class="mb-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-3">Rango de Precio</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="min-price" class="block text-xs text-gray-500 mb-1">Precio mínimo: ${{ minPrice }}</label>
+                                    <input type="range" id="min-price" min="0" max="1000" v-model="minPrice" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                                <div>
+                                    <label for="max-price" class="block text-xs text-gray-500 mb-1">Precio máximo: ${{ maxPrice }}</label>
+                                    <input type="range" id="max-price" min="100" max="2000" v-model="maxPrice" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Brands -->
+                        <div class="mb-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-3">Marcas</h3>
+                            <div class="space-y-2">
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">Apple</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300" checked>
+                                    <span class="ml-2 text-sm text-gray-700">Samsung</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">Sony</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">LG</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">Xiaomi</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Discount -->
+                        <div class="mb-6">
+                            <h3 class="text-sm font-medium text-gray-700 mb-3">Descuento</h3>
+                            <div class="space-y-2">
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300" checked>
+                                    <span class="ml-2 text-sm text-gray-700">20% o más</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">30% o más</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">40% o más</span>
+                                </label>
+                                <label class="flex items-center filter-option p-2 rounded cursor-pointer">
+                                    <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+                                    <span class="ml-2 text-sm text-gray-700">50% o más</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700">
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                    
+                    <!-- Special Offers Banner -->
+                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow p-6 text-white">
+                        <h3 class="text-lg font-medium mb-2">Ofertas Especiales</h3>
+                        <p class="text-sm mb-4">¡Solo por tiempo limitado! Descuentos increíbles en electrónicos seleccionados.</p>
+                        <button class="w-full py-2 bg-white text-indigo-600 font-medium rounded-lg hover:bg-gray-100">
+                            Ver Ofertas
+                        </button>
+                    </div>
+                </aside>
+                
+                <!-- Products Listing -->
+                <div class="flex-grow">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Electrónicos en Oferta</h2>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-700 mr-2">Ordenar por:</span>
+                                <select class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300">
+                                    <option>Más relevantes</option>
+                                    <option>Precio: menor a mayor</option>
+                                    <option>Precio: mayor a menor</option>
+                                    <option>Mejor valorados</option>
+                                    <option>Más vendidos</option>
+                                </select>
+                            </div>
+                            <div class="hidden md:flex space-x-2">
+                                <button class="p-2 rounded border border-gray-300 text-gray-500 hover:bg-gray-100">
+                                    <i class="fa-solid fa-grip-horizontal"></i>
+                                </button>
+                                <button class="p-2 rounded border border-indigo-300 bg-indigo-50 text-indigo-600">
+                                    <i class="fa-solid fa-list"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-8">Mostrando {{ filteredProducts.length }} productos electrónicos con descuentos especiales</p>
+                    
+                    <!-- Products Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div v-for="product in filteredProducts" :key="product.id" class="bg-white rounded-lg shadow product-card transition-all duration-300 relative">
+                            <div class="discount-badge" v-if="product.discount">
+                                -{{ product.discount }}%
+                            </div>
+                            <div class="h-48 bg-gray-200 rounded-t-lg overflow-hidden">
+                                <img :src="product.image" :alt="product.name" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-medium px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full">{{ product.category }}</span>
+                                    <div class="flex text-yellow-400 text-xs">
+                                        <i class="fa-solid fa-star" v-for="star in 5" :key="star"></i>
+                                        <span class="text-gray-500 ml-1">({{ product.reviews }})</span>
+                                    </div>
+                                </div>
+                                <h3 class="text-sm font-medium text-gray-800 mb-2">{{ product.name }}</h3>
+                                <div class="flex items-center mb-3">
+                                    <p class="text-lg font-bold text-indigo-600">${{ product.price }}</p>
+                                    <p class="text-sm price-before ml-2" v-if="product.originalPrice">${{ product.originalPrice }}</p>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <button class="flex-1 mr-2 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 flex items-center justify-center">
+                                        <i class="fa-solid fa-cart-plus mr-2"></i> Comprar
+                                    </button>
+                                    <button class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-12">
+                        <nav class="flex items-center space-x-2">
+                            <button class="h-10 w-10 rounded-full bg-indigo-600 text-white flex items-center justify-center">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </button>
+                            <button class="h-10 w-10 rounded-full bg-indigo-100 text-indigo-600 font-medium flex items-center justify-center">1</button>
+                            <button class="h-10 w-10 rounded-full bg-white border border-gray-300 text-gray-700 font-medium flex items-center justify-center hover:bg-gray-50">2</button>
+                            <button class="h-10 w-10 rounded-full bg-white border border-gray-300 text-gray-700 font-medium flex items-center justify-center hover:bg-gray-50">3</button>
+                            <button class="h-10 w-10 rounded-full bg-white border border-gray-300 text-gray-700 font-medium flex items-center justify-center hover:bg-gray-50">4</button>
+                            <button class="h-10 w-10 rounded-full bg-white border border-gray-300 text-gray-700 font-medium flex items-center justify-center hover:bg-gray-50">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                            <button class="h-10 w-10 rounded-full bg-white border border-gray-300 text-gray-700 flex items-center justify-center hover:bg-gray-50">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-lg font-medium mb-4">TiendaOnline</h3>
+                        <p class="text-gray-400">Los mejores productos electrónicos a precios increíbles.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium mb-4">Categorías</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">Smartphones</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Laptops</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Tablets</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Audio</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium mb-4">Ayuda</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Envíos</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Devoluciones</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Garantías</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium mb-4">Contacto</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-envelope text-gray-400 mr-2"></i>
+                                <span class="text-gray-400">electronica@tiendaonline.com</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-phone text-gray-400 mr-2"></i>
+                                <span class="text-gray-400">+1 (234) 567-8901</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-location-dot text-gray-400 mr-2"></i>
+                                <span class="text-gray-400">Ciudad, País</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                    <p>&copy; 2023 TiendaOnline. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            setup() {
+                const minPrice = ref(0);
+                const maxPrice = ref(1000);
+                
+                const products = ref([
+                    { id: 1, name: 'Smartphone Samsung Galaxy S21', price: 699.99, originalPrice: 899.99, discount: 22, category: 'Smartphones', reviews: 128, image: 'https://via.placeholder.com/300' },
+                    { id: 2, name: 'Laptop HP Pavilion 15"', price: 849.99, originalPrice: 999.99, discount: 15, category: 'Laptops', reviews: 87, image: 'https://via.placeholder.com/300' },
+                    { id: 3, name: 'Tablet iPad Air', price: 549.99, originalPrice: 649.99, discount: 15, category: 'Tablets', reviews: 204, image: 'https://via.placeholder.com/300' },
+                    { id: 4, name: 'Auriculares Sony WH-1000XM4', price: 278.99, originalPrice: 349.99, discount: 20, category: 'Audio', reviews: 312, image: 'https://via.placeholder.com/300' },
+                    { id: 5, name: 'Smartwatch Apple Watch Series 7', price: 379.99, originalPrice: 429.99, discount: 12, category: 'Wearables', reviews: 156, image: 'https://via.placeholder.com/300' },
+                    { id: 6, name: 'Monitor LG UltraGear 27"', price: 299.99, originalPrice: 399.99, discount: 25, category: 'Monitores', reviews: 98, image: 'https://via.placeholder.com/300' },
+                    { id: 7, name: 'Teclado Mecánico RGB', price: 79.99, originalPrice: 99.99, discount: 20, category: 'Accesorios', reviews: 267, image: 'https://via.placeholder.com/300' },
+                    { id: 8, name: 'Altavoz Bluetooth JBL', price: 89.99, originalPrice: 119.99, discount: 25, category: 'Audio', reviews: 189, image: 'https://via.placeholder.com/300' },
+                    { id: 9, name: 'Cámara GoPro Hero 10', price: 399.99, originalPrice: 499.99, discount: 20, category: 'Cámaras', reviews: 143, image: 'https://via.placeholder.com/300' }
+                ]);
+
+                const filteredProducts = computed(() => {
+                    return products.value.filter(product => {
+                        return product.price >= minPrice.value && product.price <= maxPrice.value;
+                    });
+                });
+
+                return {
+                    minPrice,
+                    maxPrice,
+                    filteredProducts
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

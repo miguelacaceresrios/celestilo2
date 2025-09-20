@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestilo - Sistema de Gestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-600">Celestilo</h1>
+                    <nav class="ml-10 hidden md:flex space-x-8">
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Inicio</a>
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Productos</a>
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Clientes</a>
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Proveedores</a>
+                        <a href="#" class="text-gray-700 hover:text-indigo-600 font-medium">Ventas</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="text-gray-500 hover:text-indigo-600">
+                            <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        </button>
+                        <span class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </div>
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center space-x-2">
+                            <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fa-solid fa-user text-indigo-600"></i>
+                            </div>
+                            <span class="text-gray-700 font-medium">Admin</span>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-100">Perfil</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-100">Configuración</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-100">Cerrar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- Dashboard Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
+                            <i class="fa-solid fa-users text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-gray-500 text-sm">Clientes</h2>
+                            <p class="text-2xl font-bold">248</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-100 text-green-600">
+                            <i class="fa-solid fa-boxes-stacked text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-gray-500 text-sm">Productos</h2>
+                            <p class="text-2xl font-bold">1,248</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                            <i class="fa-solid fa-truck-fast text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-gray-500 text-sm">Proveedores</h2>
+                            <p class="text-2xl font-bold">42</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                            <i class="fa-solid fa-chart-simple text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-gray-500 text-sm">Ventas (mes)</h2>
+                            <p class="text-2xl font-bold">$24,850</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Products and Orders -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Recent Products -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-100">
+                        <h2 class="text-lg font-medium text-gray-800">Productos Recientes</h2>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4 flex items-center" v-for="product in products" :key="product.id">
+                            <div class="flex-shrink-0 h-12 w-12 bg-gray-200 rounded-md overflow-hidden">
+                                <img :src="product.image" :alt="product.name" class="h-full w-full object-cover">
+                            </div>
+                            <div class="ml-4 flex-grow">
+                                <h3 class="text-sm font-medium text-gray-800">{{ product.name }}</h3>
+                                <p class="text-xs text-gray-500">Stock: {{ product.stock }}</p>
+                            </div>
+                            <div class="ml-4">
+                                <span class="text-sm font-medium text-gray-800">${{ product.price }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-100">
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Ver todos los productos</a>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="bg-white rounded-lg shadow">
+                    <div class="px-6 py-4 border-b border-gray-100">
+                        <h2 class="text-lg font-medium text-gray-800">Órdenes Recientes</h2>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4" v-for="order in orders" :key="order.id">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-800">Orden #{{ order.id }}</h3>
+                                    <p class="text-xs text-gray-500">{{ order.date }}</p>
+                                </div>
+                                <div>
+                                    <span :class="['px-2 py-1 text-xs rounded-full', 
+                                        order.status === 'completed' ? 'bg-green-100 text-green-800' : 
+                                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                                        'bg-blue-100 text-blue-800']">
+                                        {{ order.status === 'completed' ? 'Completado' : 
+                                           order.status === 'pending' ? 'Pendiente' : 'Procesando' }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-2 flex justify-between items-center">
+                                <p class="text-sm text-gray-600">{{ order.customer }}</p>
+                                <p class="text-sm font-medium text-gray-800">${{ order.amount }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-100">
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Ver todas las órdenes</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-lg font-medium mb-4">TiendaOnline</h3>
+                        <p class="text-gray-400">Sistema de gestión de ventas, clientes, proveedores y productos.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium mb-4">Enlaces Rápidos</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">Inicio</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Productos</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Clientes</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Proveedores</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium mb-4">Contacto</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-envelope text-gray-400 mr-2"></i>
+                                <span class="text-gray-400">info@tiendaonline.com</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-phone text-gray-400 mr-2"></i>
+                                <span class="text-gray-400">+1 (234) 567-8901</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-location-dot text-gray-400 mr-2"></i>
+                                <span class="text-gray-400">Ciudad, País</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                    <p>&copy; 2023 TiendaOnline. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const products = ref([
+                    { id: 1, name: 'Laptop Gaming', price: 1299.99, stock: 15, image: 'https://via.placeholder.com/48' },
+                    { id: 2, name: 'Smartphone XL', price: 799.99, stock: 32, image: 'https://via.placeholder.com/48' },
+                    { id: 3, name: 'Auriculares Inalámbricos', price: 149.99, stock: 48, image: 'https://via.placeholder.com/48' },
+                    { id: 4, name: 'Monitor 4K', price: 499.99, stock: 12, image: 'https://via.placeholder.com/48' }
+                ]);
+
+                const orders = ref([
+                    { id: 1025, date: '12 Oct 2023', status: 'completed', customer: 'Juan Pérez', amount: 899.99 },
+                    { id: 1024, date: '11 Oct 2023', status: 'processing', customer: 'María García', amount: 1249.99 },
+                    { id: 1023, date: '10 Oct 2023', status: 'pending', customer: 'Carlos López', amount: 459.50 },
+                    { id: 1022, date: '10 Oct 2023', status: 'completed', customer: 'Ana Martínez', amount: 2199.99 }
+                ]);
+
+                return {
+                    products,
+                    orders
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
